@@ -1,0 +1,48 @@
+{
+	"ImportPath": "twitter",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
+	"Deps": [
+		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v3.0.0-8-g24c63f5",
+			"Rev": "24c63f56522a87ec5339cc3567883f1039378fdb"
+		},
+		{
+			"ImportPath": "github.com/julienschmidt/httprouter",
+			"Comment": "v1.1-35-g3695eea",
+			"Rev": "3695eeab107edb46a611a089b561793d2a61396d"
+		},
+		{
+			"ImportPath": "github.com/oxtoacart/bpool",
+			"Rev": "4e1c5567d7c2dd59fa4c7c83d34c2f3528b025d6"
+		},
+		{
+			"ImportPath": "github.com/philhofer/fwd",
+			"Rev": "98c11a7a6ec829d672b03833c3d69a7fae1ca972"
+		},
+		{
+			"ImportPath": "github.com/plimble/ace",
+			"Comment": "v1-24-g1bab4fd",
+			"Rev": "1bab4fdfa8bce73975d852c2abbf141543701ac7"
+		},
+		{
+			"ImportPath": "github.com/plimble/sessions",
+			"Rev": "9b87d5a817e27cd53d02ea97c30603626a9c579b"
+		},
+		{
+			"ImportPath": "github.com/plimble/utils/pool",
+			"Rev": "fe08d46675cd09e170c0fb6b7b4e4587e14d0451"
+		},
+		{
+			"ImportPath": "github.com/satori/go.uuid",
+			"Comment": "v1.1.0-6-gb061729",
+			"Rev": "b061729afc07e77a8aa4fad0a2fd840958f1942a"
+		},
+		{
+			"ImportPath": "github.com/tinylib/msgp/msgp",
+			"Comment": "v1.0-beta-12-gad0ff2e",
+			"Rev": "ad0ff2e232ad2e37faf67087fb24bf8d04a8ce20"
+		}
+	]
+}
