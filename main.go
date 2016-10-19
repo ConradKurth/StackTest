@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"github.com/plimble/ace"
+	"log"
 	"os"
 	"twitter/tokens"
 	"twitter/tweets"
@@ -49,6 +49,14 @@ func main() {
 	a.GET("/register", RegisterUser)
 	a.GET("/tweets", Auth, GetTweets)
 
-	e, _ := t.GetTweets("conradkurth")
-	fmt.Println(e)
+	a.Run(GetPort())
+}
+
+func GetPort() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Println("[-] No PORT environment variable detected. Setting to ", port)
+	}
+	return ":" + port
 }
