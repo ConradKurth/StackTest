@@ -12,7 +12,6 @@ var t *tweets.Twitter
 
 func Auth(c *ace.C) {
 	t := c.Request.Header.Get("Authorization")
-
 	if err := tokens.VerifyJWT(t); err != nil {
 		c.JSON(400, map[string]string{"error": "Invalid token"})
 		c.Abort()

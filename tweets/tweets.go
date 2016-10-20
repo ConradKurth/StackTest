@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-	"time"
 )
 
 type Twitter struct {
@@ -26,8 +25,8 @@ const (
 )
 
 type TwitterResp struct {
-	Created time.Time `json:"created"`
-	Text    string    `json:"text"`
+	Created string `json:"created_at"`
+	Text    string `json:"text"`
 }
 
 var t *Twitter

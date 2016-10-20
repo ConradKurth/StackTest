@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+const (
+	User = "Twitter"
+)
+
 var SECRET = os.Getenv("SECRET")
 
 type MyCustomClaims struct {
@@ -29,8 +33,7 @@ func VerifyJWT(token string) error {
 	if err != nil {
 		return err
 	}
-
-	if t.Valid && m.User == "Twiter" {
+	if t.Valid && m.User == User {
 		return nil
 	}
 	return errors.New("Unable to verify token")
@@ -39,7 +42,7 @@ func VerifyJWT(token string) error {
 func GenerateToken() string {
 	signer := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"kid":  "user",
-		"user": "Twitter",
+		"user": User,
 		"exp":  time.Now().Add(time.Hour).Unix(),
 		"iat":  time.Now().Unix(),
 	})
