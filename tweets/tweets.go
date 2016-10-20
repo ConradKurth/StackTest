@@ -24,9 +24,22 @@ const (
 	baseUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 )
 
+type Mentions struct {
+	Name string `json:"screen_name"`
+}
+
 type TwitterResp struct {
-	Created string `json:"created_at"`
-	Text    string `json:"text"`
+	Created  string `json:"created_at"`
+	Text     string `json:"text"`
+	Entities struct {
+		M []Mentions `json:"user_mentions"`
+	} `json:"entities"`
+}
+
+type FResp struct {
+	Created  string   `json:"created"`
+	Text     string   `json:"text"`
+	Mentions []string `json:"mentions"`
 }
 
 var t *Twitter
@@ -109,11 +122,11 @@ func (t *Twitter) getRequest(u string, r interface{}) error {
 	return nil
 }
 
-func (t *Twitter) GetTweets(name string) ([]TwitterResp, error) {
+func (t *Twitter) GetTweets(name string) ([]FResp, error) {
 
 	i := cache.GetItem(name)
 	if i != nil {
-		return i.([]TwitterResp), nil
+		return i.([]FResp), nil
 	}
 
 	u := baseUrl + "?" + "screen_name=" + name + "&count=" + "25"
@@ -125,6 +138,15 @@ func (t *Twitter) GetTweets(name string) ([]TwitterResp, error) {
 		return nil, err
 	}
 
-	cache.AddItem(name, r)
-	return r, nil
+	f := make([]FResp, 0, len(r))
+	for _, v := range r {
+		t := FResp{Created: v.Created, Text: v.Text}
+		for _, m := range v.Entities.M {
+			t.Mentions = append(t.Mentions, m.Name)
+		}
+		f = append(f, t)
+	}
+
+	cache.AddItem(name, f)
+	return f, nil
 }
