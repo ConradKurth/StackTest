@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/plimble/ace"
+	"github.com/twitter/tokens"
+	"github.com/twitter/tweets"
 	"log"
 	"os"
-	"twitter/tokens"
-	"twitter/tweets"
 )
 
 var t *tweets.Twitter

@@ -1,10 +1,7 @@
 {
-	"ImportPath": "twitter",
-	"GoVersion": "go1.6",
+	"ImportPath": "github.com/twitter",
+	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
