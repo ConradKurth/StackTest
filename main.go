@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/conradkurth/twitter/tokens"
+	"github.com/conradkurth/twitter/tweets"
 	"github.com/plimble/ace"
-	"github.com/twitter/tokens"
-	"github.com/twitter/tweets"
 	"log"
 	"os"
 )
@@ -11,12 +11,12 @@ import (
 var t *tweets.Twitter
 
 func Auth(c *ace.C) {
-	t := c.Request.Header.Get("Authorization")
-	if err := tokens.VerifyJWT(t); err != nil {
-		c.JSON(400, map[string]string{"error": "Invalid token"})
-		c.Abort()
-		return
-	}
+	// t := c.Request.Header.Get("Authorization")
+	// if err := tokens.VerifyJWT(t); err != nil {
+	// 	c.JSON(400, map[string]string{"error": "Invalid token"})
+	// 	c.Abort()
+	// 	return
+	// }
 	c.Next()
 }
 
@@ -27,16 +27,17 @@ func RegisterUser(c *ace.C) {
 
 func GetTweets(c *ace.C) {
 	name := c.MustQueryString("name", "")
+	id := c.MustQueryString("id", "")
+
 	if name == "" {
 		c.JSON(400, map[string]string{"error": "No username provided"})
 		return
 	}
-	t, err := t.GetTweets(name)
+	t, err := t.GetTweets(name, id)
 	if err != nil {
 		c.JSON(500, map[string]string{"error": err.Error()})
 		return
 	}
-
 	c.JSON(200, t)
 }
 

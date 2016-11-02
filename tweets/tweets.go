@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/twitter/cache"
+	"github.com/conradkurth/twitter/cache"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -29,8 +29,10 @@ type Mentions struct {
 }
 
 type TwitterResp struct {
-	Created  string `json:"created_at"`
-	Text     string `json:"text"`
+	Created string `json:"created_at"`
+	Text    string `json:"text"`
+	//Id       int64  `json:"id"`
+	IdStr    string `json:"id_str"`
 	Entities struct {
 		M []Mentions `json:"user_mentions"`
 	} `json:"entities"`
@@ -40,6 +42,12 @@ type FResp struct {
 	Created  string   `json:"created"`
 	Text     string   `json:"text"`
 	Mentions []string `json:"mentions"`
+}
+
+type Pagination struct {
+	Resp []FResp `json:"tweets"`
+	//Id    int64   `json:"id"`
+	IdStr string `json:"id_str"`
 }
 
 var t *Twitter
@@ -116,27 +124,34 @@ func (t *Twitter) getRequest(u string, r interface{}) error {
 	if err != nil {
 		return errors.New("Poorly formed respone from twitter")
 	}
+
+	//fmt.Println(string(b))
+
 	if err := json.Unmarshal(b, &r); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *Twitter) GetTweets(name string) ([]FResp, error) {
+func (t *Twitter) GetTweets(name, maxId string) (Pagination, error) {
 
-	i := cache.GetItem(name)
+	i := cache.GetItem(name + maxId)
 	if i != nil {
-		return i.([]FResp), nil
+		return i.(Pagination), nil
 	}
 
 	u := baseUrl + "?" + "screen_name=" + name + "&count=" + "25"
+	if maxId != "" {
+		u += "&max_id=" + maxId
+	}
 
 	var r []TwitterResp
 	err := t.getRequest(u, &r)
-
 	if err != nil {
-		return nil, err
+		return Pagination{}, err
 	}
+
+	resp := Pagination{IdStr: r[len(r)-1].IdStr}
 
 	f := make([]FResp, 0, len(r))
 	for _, v := range r {
@@ -147,6 +162,7 @@ func (t *Twitter) GetTweets(name string) ([]FResp, error) {
 		f = append(f, t)
 	}
 
-	cache.AddItem(name, f)
-	return f, nil
+	resp.Resp = f
+	cache.AddItem(name, resp)
+	return resp, nil
 }
